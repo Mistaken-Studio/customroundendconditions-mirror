@@ -23,10 +23,10 @@ namespace Mistaken.CustomRoundEndConditions
         public override string Prefix => "MCustomRoundEndConditions";
 
         /// <inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.Higher;
+        public override PluginPriority Priority => PluginPriority.Medium;
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(4, 1, 7);
+        public override Version RequiredExiledVersion => new Version(4, 2, 2);
 
         /// <inheritdoc/>
         public override void OnEnabled()
