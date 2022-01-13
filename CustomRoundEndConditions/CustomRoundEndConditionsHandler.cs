@@ -80,7 +80,6 @@ namespace Mistaken.CustomRoundEndConditions
                 ev.LeadingTeam = LeadingTeam.Draw;
             }
 
-            ev.IsRoundEnded = true;
             ev.IsAllowed = true;
         }
     }
