@@ -48,7 +48,7 @@ namespace Mistaken.CustomRoundEndConditions
                 ev.IsAllowed = false;
                 return;
             }
-            else if (RoundSummary.EscapedClassD != 0)
+            else if (RoundSummary.EscapedClassD != 0 || RoundSummary.singleton.CountRole(RoleType.ClassD) != 0)
             {
                 if (PluginHandler.Instance.Config.ClassDEscape <= (RoundSummary.EscapedClassD / RoundSummary.singleton.CountRole(RoleType.ClassD) * 100))
                 {
@@ -56,7 +56,7 @@ namespace Mistaken.CustomRoundEndConditions
                     ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
                 }
             }
-            else if (RoundSummary.EscapedScientists != 0)
+            else if (RoundSummary.EscapedScientists != 0 || RoundSummary.singleton.CountRole(RoleType.Scientist) != 0)
             {
                 if (PluginHandler.Instance.Config.ScientistsEscape <= (RoundSummary.EscapedScientists / RoundSummary.singleton.CountRole(RoleType.Scientist) * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMTFAlive >= (RoundSummary.EscapedScientists / RoundSummary.singleton.CountRole(RoleType.Scientist)) && mtfAlive != 0 && nonMTFAlive == 0))
                 {
