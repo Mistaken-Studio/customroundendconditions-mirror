@@ -32,9 +32,9 @@ namespace Mistaken.CustomRoundEndConditions
         public bool ScpCiWin { get; set; }
 
         /// <summary>
-        /// Gets or sets the percentage of Class D to escape for win.
+        /// Gets or sets the percentage of Class D to escape for CI to win.
         /// </summary>
-        [Description("Class D Escape percentage to win")]
+        [Description("Class D Escape percentage for CI to win")]
         public decimal ClassDEscape { get; set; } = 50;
 
         /// <summary>
