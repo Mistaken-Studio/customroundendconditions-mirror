@@ -47,6 +47,6 @@ namespace Mistaken.CustomRoundEndConditions
         /// Gets or sets the percentage of Scientists to escape for MTF to win when only MTF is alive.
         /// </summary>
         [Description("Scientists Escape percentage for MTF to win when only MTF is alive.")]
-        public decimal ScientistsEscapeOnlyMTFAlive { get; set; } = 50;
+        public decimal ScientistsEscapeOnlyMtfAlive { get; set; } = 50;
     }
 }

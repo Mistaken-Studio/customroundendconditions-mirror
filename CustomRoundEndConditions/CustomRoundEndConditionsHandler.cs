@@ -26,16 +26,20 @@ namespace Mistaken.CustomRoundEndConditions
         {
             Exiled.Events.Handlers.Server.EndingRound += this.Server_EndingRound;
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
+            Exiled.Events.Handlers.Player.Escaping += this.Player_Escaping;
         }
 
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.EndingRound -= this.Server_EndingRound;
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
+            Exiled.Events.Handlers.Player.Escaping -= this.Player_Escaping;
         }
 
         private int classD = 0;
         private int scientists = 0;
+        private int escapedclassD = 0;
+        private int escapedscientists = 0;
 
         private void Server_RoundStarted()
         {
@@ -58,28 +62,28 @@ namespace Mistaken.CustomRoundEndConditions
             int mtfAlive = Player.List.Where(x => x.IsNTF).Count();
             int nonMTFAlive = Player.List.Where(x => !x.IsNTF).Count();
             int nonSCPAlive = Player.List.Where(x => !x.IsScp).Count();
-            if (!PluginHandler.Instance.Config.ScpCiWin && ciAlive != 0 && scpAlive != 0)
+            if (PluginHandler.Instance.Config.ScpCiWin == false && ciAlive != 0 && scpAlive != 0)
             {
                 ev.IsAllowed = false;
                 return;
             }
-            else if (RoundSummary.EscapedClassD != 0 || this.classD != 0)
+            else if (this.escapedclassD != 0 || this.classD != 0)
             {
-                if (PluginHandler.Instance.Config.ClassDEscape <= (RoundSummary.EscapedClassD / this.classD * 100))
+                if (PluginHandler.Instance.Config.ClassDEscape <= (this.escapedclassD / this.classD * 100))
                 {
-                    this.Log.Debug($"Class D won. {RoundSummary.EscapedClassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
+                    this.Log.Debug($"Class D won. {this.escapedclassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
                     ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
                 }
             }
-            else if (RoundSummary.EscapedScientists != 0 || this.scientists != 0)
+            else if (this.escapedscientists != 0 || this.scientists != 0)
             {
-                if (PluginHandler.Instance.Config.ScientistsEscape <= (RoundSummary.EscapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMTFAlive >= (RoundSummary.EscapedScientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
+                if (PluginHandler.Instance.Config.ScientistsEscape <= (this.escapedscientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (this.escapedscientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
                 {
-                    this.Log.Debug($"MTF won. {RoundSummary.EscapedScientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
+                    this.Log.Debug($"MTF won. {this.escapedscientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
                 }
-                else if (PluginHandler.Instance.Config.ScientistsEscape <= (RoundSummary.EscapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMTFAlive >= (RoundSummary.EscapedScientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
+                else if (PluginHandler.Instance.Config.ScientistsEscape <= (this.escapedscientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (this.escapedscientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
                 {
-                    this.Log.Debug($"MTF won. {RoundSummary.EscapedScientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
+                    this.Log.Debug($"MTF won. {this.escapedscientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
                 }
 
                 ev.LeadingTeam = LeadingTeam.FacilityForces;
@@ -96,6 +100,14 @@ namespace Mistaken.CustomRoundEndConditions
             }
 
             ev.IsAllowed = true;
+        }
+
+        private void Player_Escaping(EscapingEventArgs ev)
+        {
+            if (ev.Player.Role == RoleType.ClassD)
+                this.escapedclassD++;
+            else if (ev.Player.Role == RoleType.Scientist)
+                this.escapedscientists++;
         }
     }
 }
