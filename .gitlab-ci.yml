@@ -2,3 +2,4 @@ include:
   - project: 'scp-sl/ci'
     ref: master
     file: 'entry.gitlab-ci.yml'
+
