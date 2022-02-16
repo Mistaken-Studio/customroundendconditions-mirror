@@ -62,38 +62,43 @@ namespace Mistaken.CustomRoundEndConditions
             int mtfAlive = Player.List.Where(x => x.IsNTF).Count();
             int nonMTFAlive = Player.List.Where(x => !x.IsNTF).Count();
             int nonSCPAlive = Player.List.Where(x => !x.IsScp).Count();
-            if (PluginHandler.Instance.Config.ScpCiWin == false && ciAlive != 0 && scpAlive != 0)
+
+            var escapedClassD = this.escapedclassD + Player.List.Where(x => x.Role == RoleType.ClassD).Count();
+            var escapedScientists = this.escapedscientists + Player.List.Where(x => x.Role == RoleType.Scientist).Count();
+
+            if (!PluginHandler.Instance.Config.ScpCiWin && ciAlive != 0 && scpAlive != 0)
             {
                 ev.IsAllowed = false;
                 return;
             }
-            else if (this.escapedclassD != 0 || this.classD != 0)
-            {
-                if (PluginHandler.Instance.Config.ClassDEscape <= (this.escapedclassD / this.classD * 100))
-                {
-                    this.Log.Debug($"Class D won. {this.escapedclassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
-                    ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
-                }
-            }
-            else if (this.escapedscientists != 0 || this.scientists != 0)
-            {
-                if (PluginHandler.Instance.Config.ScientistsEscape <= (this.escapedscientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (this.escapedscientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
-                {
-                    this.Log.Debug($"MTF won. {this.escapedscientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
-                }
-                else if (PluginHandler.Instance.Config.ScientistsEscape <= (this.escapedscientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (this.escapedscientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
-                {
-                    this.Log.Debug($"MTF won. {this.escapedscientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
-                }
 
-                ev.LeadingTeam = LeadingTeam.FacilityForces;
+            if (escapedClassD != 0 || this.classD != 0)
+            {
+                if (PluginHandler.Instance.Config.ClassDEscape <= (escapedClassD / this.classD * 100))
+                {
+                    this.Log.Debug($"Class D won. {escapedClassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
+                    ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
+                    return;
+                }
             }
-            else if (scpAlive != 0 && nonSCPAlive == 0)
+
+            if (escapedScientists != 0 || this.scientists != 0)
+            {
+                if (PluginHandler.Instance.Config.ScientistsEscape <= (escapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (escapedScientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
+                {
+                    this.Log.Debug($"MTF won. {escapedScientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
+                    ev.LeadingTeam = LeadingTeam.FacilityForces;
+                    return;
+                }
+            }
+
+            if (scpAlive != 0 && nonSCPAlive == 0)
             {
                 this.Log.Debug($"SCP won. {scpAlive} SCPs Left. {nonSCPAlive} Humans Left.", PluginHandler.Instance.Config.VerbouseOutput);
                 ev.LeadingTeam = LeadingTeam.FacilityForces;
+                return;
             }
-            else
+
             {
                 this.Log.Debug($"No one won.", PluginHandler.Instance.Config.VerbouseOutput);
                 ev.LeadingTeam = LeadingTeam.Draw;
