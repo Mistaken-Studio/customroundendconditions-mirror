@@ -47,6 +47,8 @@ namespace Mistaken.CustomRoundEndConditions
             {
                 this.classD = RoundSummary.singleton.CountRole(RoleType.ClassD);
                 this.scientists = RoundSummary.singleton.CountRole(RoleType.Scientist);
+                this.escapedclassD = 0;
+                this.escapedscientists = 0;
             });
         }
 
@@ -72,7 +74,7 @@ namespace Mistaken.CustomRoundEndConditions
                 return;
             }
 
-            if (escapedClassD != 0 || this.classD != 0)
+            if (escapedClassD != 0 && this.classD != 0)
             {
                 if (PluginHandler.Instance.Config.ClassDEscape <= (escapedClassD / this.classD * 100))
                 {
@@ -82,9 +84,9 @@ namespace Mistaken.CustomRoundEndConditions
                 }
             }
 
-            if (escapedScientists != 0 || this.scientists != 0)
+            if (escapedScientists != 0 && this.scientists != 0)
             {
-                if (PluginHandler.Instance.Config.ScientistsEscape <= (escapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (escapedScientists / this.scientists) && mtfAlive != 0 && nonMTFAlive == 0))
+                if (PluginHandler.Instance.Config.ScientistsEscape <= (escapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (escapedScientists / this.scientists * 100) && mtfAlive != 0 && nonMTFAlive == 0))
                 {
                     this.Log.Debug($"MTF won. {escapedScientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
                     ev.LeadingTeam = LeadingTeam.FacilityForces;
