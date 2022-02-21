@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CustomRoundEndConditionsHandler.cs" company="Mistaken">
 // Copyright (c) Mistaken. All rights reserved.
 // </copyright>
@@ -76,9 +76,9 @@ namespace Mistaken.CustomRoundEndConditions
 
             if (escapedClassD != 0 && this.classD != 0)
             {
-                if (PluginHandler.Instance.Config.ClassDEscape <= (escapedClassD / this.classD * 100))
+                if (PluginHandler.Instance.Config.ClassDEscape <= ((float)escapedClassD / this.classD * 100))
                 {
-                    this.Log.Debug($"Class D won. {escapedClassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
+                    this.Log.Debug($"Class D won. {(float)escapedClassD / this.classD * 100}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.", PluginHandler.Instance.Config.VerbouseOutput);
                     ev.LeadingTeam = LeadingTeam.ChaosInsurgency;
                     return;
                 }
@@ -86,7 +86,7 @@ namespace Mistaken.CustomRoundEndConditions
 
             if (escapedScientists != 0 && this.scientists != 0)
             {
-                if (PluginHandler.Instance.Config.ScientistsEscape <= (escapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= (escapedScientists / this.scientists * 100) && mtfAlive != 0 && nonMTFAlive == 0))
+                if (PluginHandler.Instance.Config.ScientistsEscape <= ((float)escapedScientists / this.scientists * 100) || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= ((float)escapedScientists / this.scientists * 100) && mtfAlive != 0 && nonMTFAlive == 0))
                 {
                     this.Log.Debug($"MTF won. {escapedScientists / this.scientists * 100}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{mtfAlive} MTF Alive\n{nonMTFAlive} Others Alive.", PluginHandler.Instance.Config.VerbouseOutput);
                     ev.LeadingTeam = LeadingTeam.FacilityForces;
