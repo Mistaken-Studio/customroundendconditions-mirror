@@ -35,7 +35,7 @@ namespace Mistaken.CustomRoundEndConditions
         /// Gets or sets the percentage of Class D to escape for CI to win.
         /// </summary>
         [Description("Class D Escape percentage for CI to win")]
-        public float ClassDEscape { get; set; } = 50;
+        public float ClassDEscape { get; set; } = 40;
 
         /// <summary>
         /// Gets or sets the percentage of Scientists to escape for MTF to win.
@@ -47,6 +47,6 @@ namespace Mistaken.CustomRoundEndConditions
         /// Gets or sets the percentage of Scientists to escape for MTF to win when only MTF is alive.
         /// </summary>
         [Description("Scientists Escape percentage for MTF to win when only MTF is alive.")]
-        public float ScientistsEscapeOnlyMtfAlive { get; set; } = 50;
+        public float ScientistsEscapeOnlyMtfAlive { get; set; } = 30;
     }
 }
