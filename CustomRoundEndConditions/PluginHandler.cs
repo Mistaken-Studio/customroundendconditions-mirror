@@ -4,9 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using System;
 
 namespace Mistaken.CustomRoundEndConditions
 {
@@ -17,23 +17,23 @@ namespace Mistaken.CustomRoundEndConditions
         public override string Author => "Mistaken Devs";
 
         /// <inheritdoc/>
-        public override string Name => "";
+        public override string Name => "CustomRoundEndConditions";
 
         /// <inheritdoc/>
-        public override string Prefix => "M";
+        public override string Prefix => "MCustomRoundEndConditions";
 
         /// <inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.Higher;
+        public override PluginPriority Priority => PluginPriority.Medium;
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(2, 11, 0);
+        public override Version RequiredExiledVersion => new Version(4, 2, 2);
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
             Instance = this;
 
-            // new Handler(this);
+            new CustomRoundEndConditionsHandler(this);
 
             API.Diagnostics.Module.OnEnable(this);
 
