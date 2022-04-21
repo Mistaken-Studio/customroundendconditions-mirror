@@ -61,12 +61,12 @@ namespace Mistaken.CustomRoundEndConditions
 
             int ciAlive = Player.List.Where(x => x.IsCHI).Count();
             int scpAlive = Player.List.Where(x => x.IsScp).Count();
-            int mtfAlive = Player.List.Where(x => x.IsNTF || x.Role == RoleType.Scientist).Count();
-            int nonMTFAlive = Player.List.Where(x => !x.IsNTF && x.Role != RoleType.Scientist).Count();
+            int mtfAlive = Player.List.Where(x => x.IsNTF || x.Role.Type == RoleType.Scientist).Count();
+            int nonMTFAlive = Player.List.Where(x => !x.IsNTF && x.Role.Type != RoleType.Scientist).Count();
             int nonSCPAlive = Player.List.Where(x => !x.IsScp).Count();
 
-            var escapedClassD = this.escapedclassD + Player.List.Where(x => x.Role == RoleType.ClassD).Count();
-            var escapedScientists = this.escapedscientists + Player.List.Where(x => x.Role == RoleType.Scientist).Count();
+            var escapedClassD = this.escapedclassD + Player.List.Where(x => x.Role.Type == RoleType.ClassD).Count();
+            var escapedScientists = this.escapedscientists + Player.List.Where(x => x.Role.Type == RoleType.Scientist).Count();
 
             if (!PluginHandler.Instance.Config.ScpCiWin && ciAlive != 0 && scpAlive != 0)
             {
@@ -111,9 +111,9 @@ namespace Mistaken.CustomRoundEndConditions
 
         private void Player_Escaping(EscapingEventArgs ev)
         {
-            if (ev.Player.Role == RoleType.ClassD && !ev.Player.IsCuffed)
+            if (ev.Player.Role.Type == RoleType.ClassD && !ev.Player.IsCuffed)
                 this.escapedclassD++;
-            else if (ev.Player.Role == RoleType.Scientist && !ev.Player.IsCuffed)
+            else if (ev.Player.Role.Type == RoleType.Scientist && !ev.Player.IsCuffed)
                 this.escapedscientists++;
         }
     }
