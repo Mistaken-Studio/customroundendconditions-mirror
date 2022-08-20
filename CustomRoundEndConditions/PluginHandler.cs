@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Reflection;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 
@@ -33,9 +34,11 @@ namespace Mistaken.CustomRoundEndConditions
         {
             Instance = this;
 
-            new CustomRoundEndConditionsHandler(this);
+            this.Harmony = new HarmonyLib.Harmony("com.mistaken.customroundendconditions");
+            this.Harmony.PatchAll();
 
-            API.Diagnostics.Module.OnEnable(this);
+            Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(RoundSummary).GetMethod(nameof(RoundSummary.Start), BindingFlags.Instance | BindingFlags.NonPublic));
+            Exiled.Events.Events.Instance.ReloadDisabledPatches();
 
             base.OnEnabled();
         }
@@ -43,11 +46,13 @@ namespace Mistaken.CustomRoundEndConditions
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            API.Diagnostics.Module.OnDisable(this);
+            this.Harmony.UnpatchAll();
 
             base.OnDisabled();
         }
 
         internal static PluginHandler Instance { get; private set; }
+
+        internal HarmonyLib.Harmony Harmony { get; private set; }
     }
 }

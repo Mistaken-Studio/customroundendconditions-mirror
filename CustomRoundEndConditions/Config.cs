@@ -21,15 +21,11 @@ namespace Mistaken.CustomRoundEndConditions
         [Description("If true then debug will be displayed")]
         public bool VerbouseOutput { get; set; }
 
-        /// <inheritdoc/>
-        [Description("Auto Update Settings")]
-        public System.Collections.Generic.Dictionary<string, string> AutoUpdateConfig { get; set; }
-
         /// <summary>
-        /// Gets or sets a value indicating whether should the round end when SCPs and CI are alive.
+        /// Gets or sets a value indicating whether the round should end when SCPs and CI are alive.
         /// </summary>
         [Description("If true the round will end when SCPs and CI are alive.")]
-        public bool ScpCiWin { get; set; }
+        public bool ScpCiWin { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the percentage of Class D to escape for CI to win.
@@ -48,5 +44,15 @@ namespace Mistaken.CustomRoundEndConditions
         /// </summary>
         [Description("Scientists Escape percentage for MTF to win when only MTF is alive.")]
         public float ScientistsEscapeOnlyMtfAlive { get; set; } = 30;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Cuffed Players should be counted as if they were in an opposite team.
+        /// </summary>
+        [Description("If true Cuffed Players will be counted as if they were in an opposite team.")]
+        public bool ForceOppositeTeamForCuffedPlayers { get; set; } = false;
+
+        /// <inheritdoc/>
+        [Description("Auto Update Settings")]
+        public System.Collections.Generic.Dictionary<string, string> AutoUpdateConfig { get; set; }
     }
 }
