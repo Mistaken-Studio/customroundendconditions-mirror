@@ -153,27 +153,24 @@ namespace Mistaken.CustomRoundEndConditions
                 EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 string message;
-                if (escapedClassD != 0 && roundSummary.classlistStart.class_ds != 0)
+                bool classDWin = PluginHandler.Instance.Config.ClassDEscape <= escapedClassDPercentage;
+                bool scientistWin = PluginHandler.Instance.Config.ScientistsEscape <= escapedScientistsPercentage || (facilityForces != 0 && nonMTF == 0 && PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive <= escapedScientistsPercentage);
+                bool scpWin = scps != 0 && nonSCP == 0;
+                if (classDWin && !scientistWin)
                 {
-                    if (PluginHandler.Instance.Config.ClassDEscape <= escapedClassDPercentage)
-                    {
-                        message = $"Class D won. {escapedClassDPercentage}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.";
-                        endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
-                        goto Label;
-                    }
+                    message = $"Class D won. {escapedClassDPercentage}% Escaped. {PluginHandler.Instance.Config.ClassDEscape}% Required.";
+                    endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
+                    goto Label;
                 }
 
-                if (escapedScientists != 0 && roundSummary.classlistStart.scientists != 0)
+                if (scientistWin && !scpWin && !classDWin)
                 {
-                    if (PluginHandler.Instance.Config.ScientistsEscape <= escapedScientistsPercentage || (PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive >= escapedScientistsPercentage && facilityForces != 0 && nonMTF == 0))
-                    {
-                        message = $"MTF won. {escapedScientistsPercentage}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{facilityForces} MTF Alive\n{nonMTF} Others Alive.";
-                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
-                        goto Label;
-                    }
+                    message = $"MTF won. {escapedScientistsPercentage}% Scientists Escaped. {PluginHandler.Instance.Config.ScientistsEscape}% Required.\n{facilityForces} MTF Alive\n{nonMTF} Others Alive.";
+                    endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
+                    goto Label;
                 }
 
-                if (scps != 0 && nonSCP == 0)
+                if (scpWin && !classDWin && !scientistWin)
                 {
                     message = $"SCP won. {scps} SCPs Left. {nonSCP} Humans Left.";
                     endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
