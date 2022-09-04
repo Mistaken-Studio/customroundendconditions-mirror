@@ -153,8 +153,8 @@ namespace Mistaken.CustomRoundEndConditions
                 EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 string message;
-                bool classDWin = escapedClassD != 0 && roundSummary.classlistStart.class_ds != 0 && PluginHandler.Instance.Config.ClassDEscape <= escapedClassDPercentage;
-                bool scientistWin = escapedScientists != 0 && roundSummary.classlistStart.scientists != 0 && (PluginHandler.Instance.Config.ScientistsEscape <= escapedScientistsPercentage || (facilityForces != 0 && nonMTF == 0 && PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive <= escapedScientistsPercentage));
+                bool classDWin = PluginHandler.Instance.Config.ClassDEscape <= escapedClassDPercentage;
+                bool scientistWin = PluginHandler.Instance.Config.ScientistsEscape <= escapedScientistsPercentage || (facilityForces != 0 && nonMTF == 0 && PluginHandler.Instance.Config.ScientistsEscapeOnlyMtfAlive <= escapedScientistsPercentage);
                 bool scpWin = scps != 0 && nonSCP == 0;
                 if (classDWin && !scientistWin)
                 {
